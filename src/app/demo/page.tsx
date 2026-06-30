@@ -186,6 +186,15 @@ function VoiceInterfaceContent() {
                 </Button>
               </CardContent>
             </Card>
+
+            <div className="mt-8 w-full max-w-lg text-center text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="font-medium text-zinc-700 dark:text-zinc-300 mb-3">Try saying one of these exact prompts for the judges:</p>
+              <ul className="space-y-3">
+                <li className="bg-white dark:bg-zinc-800/50 p-2 rounded-md border border-zinc-200 dark:border-zinc-700">"I am a 35 year old male farmer from Maharashtra with an annual income of 50000 rupees."</li>
+                <li className="bg-white dark:bg-zinc-800/50 p-2 rounded-md border border-zinc-200 dark:border-zinc-700">"I am a 25 year old pregnant woman from Uttar Pradesh."</li>
+                <li className="bg-white dark:bg-zinc-800/50 p-2 rounded-md border border-zinc-200 dark:border-zinc-700">"I am a 45 year old disabled weaver from Andhra Pradesh."</li>
+              </ul>
+            </div>
           </div>
         )}
 
