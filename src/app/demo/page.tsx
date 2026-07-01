@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { SUPPORTED_LANGUAGES } from "@/lib/translations";
+import { SUPPORTED_LANGUAGES, TRANSLATIONS } from "@/lib/translations";
 // --- Static Dictionary Translation ---
 const T = ({ children, lang }: { children: string, lang: string }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS['en-IN'];
