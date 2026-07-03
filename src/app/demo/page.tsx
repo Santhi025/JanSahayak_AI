@@ -172,8 +172,43 @@ function VoiceInterfaceContent() {
       const chatData = await chatRes.json();
       if (chatData.error) throw new Error(chatData.error);
       
-      setMessages([...newMessages, { role: 'assistant', content: chatData.reply }]);
-      speakResponse(chatData.reply);
+      const { intent, targetSchemeId, acknowledgment, spokenResponse } = chatData;
+      
+      // Update UI with short acknowledgment only
+      setMessages([...newMessages, { role: 'assistant', content: acknowledgment || "..." }]);
+      
+      // Handle Intents
+      if (intent === 'STOP') {
+         stopTTS();
+      } else if (intent === 'PAUSE') {
+         pauseTTS();
+      } else if (intent === 'RESUME') {
+         resumeTTS();
+      } else if (intent === 'NEXT') {
+         nextScheme();
+      } else if (intent === 'PREV') {
+         prevScheme();
+      } else if (intent === 'REPEAT') {
+         repeatTTS();
+      } else if (intent === 'READ_ALL') {
+         readAllSchemes();
+      } else {
+         // HIGHLIGHT TARGET SCHEME
+         if (targetSchemeId) {
+            setSpeakingScheme(targetSchemeId);
+            const index = results?.findIndex(s => s.id === targetSchemeId) ?? -1;
+            if (index !== -1) setCurrentReadIndex(index);
+            // Scroll to it
+            setTimeout(() => {
+               document.getElementById(`scheme-${targetSchemeId}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+         }
+         
+         // Speak the translated detail
+         if (spokenResponse) {
+            speakResponse(spokenResponse);
+         }
+      }
 
     } catch (error) {
       console.error("Chat Error:", error);
@@ -194,46 +229,6 @@ function VoiceInterfaceContent() {
     if (!results) {
       await handleInitialSearch(textToSubmit);
     } else {
-      // Voice Commands override
-      const lower = textToSubmit.toLowerCase();
-      if (lower.includes("stop") || lower.includes("stop reading")) {
-        stopTTS();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Stopped.' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      } else if (lower.includes("read all") || lower.includes("read schemes")) {
-        readAllSchemes();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Reading schemes...' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      } else if (lower.includes("next scheme")) {
-        nextScheme();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Next scheme.' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      } else if (lower.includes("previous scheme")) {
-        prevScheme();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Previous scheme.' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      } else if (lower.includes("pause")) {
-        pauseTTS();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Paused.' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      } else if (lower.includes("continue") || lower.includes("resume") || lower.includes("play")) {
-        resumeTTS();
-        setMessages(m => [...m, { role: 'user', content: textToSubmit }, { role: 'assistant', content: 'Resuming.' }]);
-        setIsProcessing(false);
-        setTranscript("");
-        return;
-      }
-
       await handleFollowUpChat(textToSubmit);
     }
     
@@ -434,7 +429,7 @@ function VoiceInterfaceContent() {
               <p className="text-zinc-500"><T lang={langQuery}>No matching schemes found for this profile.</T></p>
             ) : (
               results.map((scheme, i) => (
-                <Card key={scheme.id || i} className={`overflow-hidden border-zinc-200 dark:border-zinc-800 transition-all ${speakingScheme === scheme.id ? 'ring-2 ring-blue-500 shadow-md' : ''}`}>
+                <Card id={`scheme-${scheme.id || i}`} key={scheme.id || i} className={`overflow-hidden border-zinc-200 dark:border-zinc-800 transition-all ${speakingScheme === scheme.id ? 'ring-2 ring-blue-500 shadow-md' : ''}`}>
                   <CardHeader className="bg-zinc-50 dark:bg-zinc-900/50 pb-4">
                     <div className="flex justify-between items-start gap-4">
                       <div>
