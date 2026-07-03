@@ -150,7 +150,7 @@ export class VoiceManager {
 
   private playCloudAudio(text: string, lang: string) {
     const baseLang = lang.split('-')[0];
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${baseLang}&client=tw-ob`;
+    const url = `/api/tts?text=${encodeURIComponent(text)}&lang=${baseLang}`;
     
     this.cloudAudio = new Audio(url);
     
