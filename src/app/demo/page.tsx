@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { SUPPORTED_LANGUAGES, TRANSLATIONS } from "@/lib/translations";
+import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
+
 // --- Static Dictionary Translation ---
 const T = ({ children, lang }: { children: string, lang: string }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS['en-IN'];
@@ -55,62 +57,43 @@ function VoiceInterfaceContent() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const [currentReadIndex, setCurrentReadIndex] = useState(-1);
-  
-  const recognitionRef = useRef<any>(null);
-  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize Speech Recognition
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // @ts-ignore
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = true;
-        recognitionRef.current.interimResults = true;
-        recognitionRef.current.lang = langQuery;
-        
-        recognitionRef.current.onresult = (event: any) => {
-          let currentTranscript = "";
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            currentTranscript += event.results[i][0].transcript;
-          }
-          setTranscript((prev) => {
-             // For continuous mode, we just take the latest interim or final
-             // Realistically, we replace the current input line
-             return currentTranscript;
-          });
+  const handleSubmit = async (overrideText: string) => {
+    const textToSubmit = overrideText.trim();
+    if (!textToSubmit) return;
+    
+    // Stop any currently playing TTS before a new prompt
+    stopTTS();
 
-          // Reset silence timer: 5 seconds of silence = auto submit
-          if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-          silenceTimerRef.current = setTimeout(() => {
-            if (isListening) {
-              recognitionRef.current?.stop();
-              setIsListening(false);
-              handleSubmit(currentTranscript);
-            }
-          }, 5000);
-        };
-        
-        recognitionRef.current.onerror = () => setIsListening(false);
-        recognitionRef.current.onend = () => setIsListening(false);
-      }
+    // Contextual Routing
+    if (!results) {
+      await handleInitialSearch(textToSubmit);
+    } else {
+      await handleFollowUpChat(textToSubmit);
     }
-  }, [langQuery, isListening]);
+  };
+  
+  const {
+    recognitionState,
+    setRecognitionState,
+    transcript,
+    setTranscript,
+    startListening,
+    stopListening
+  } = useVoiceRecognition({
+    lang: langQuery,
+    onAutoSubmit: handleSubmit,
+    silenceTimeoutMs: 5000
+  });
+
+  const isListening = recognitionState === 'LISTENING';
+  const isProcessing = recognitionState === 'PROCESSING';
 
   const toggleListening = () => {
     if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-      if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+      stopListening();
     } else {
-      setTranscript("");
-      try {
-        recognitionRef.current?.start();
-        setIsListening(true);
-      } catch (e) {
-        console.error("Speech recognition error:", e);
-      }
+      startListening();
     }
   };
 
@@ -151,6 +134,10 @@ function VoiceInterfaceContent() {
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong. Please try again.");
+    } finally {
+      if (recognitionState === 'PROCESSING') {
+        setRecognitionState('IDLE');
+      }
     }
   };
 
@@ -212,28 +199,18 @@ function VoiceInterfaceContent() {
 
     } catch (error) {
       console.error("Chat Error:", error);
+    } finally {
+      if (recognitionState === 'PROCESSING') {
+        setRecognitionState('IDLE');
+      }
     }
   };
 
-  const handleSubmit = async (overrideText?: string) => {
-    const textToSubmit = overrideText || transcript;
-    if (!textToSubmit.trim()) return;
-    
-    setIsProcessing(true);
-    if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-    
-    // Stop any currently playing TTS
-    stopTTS();
-
-    // Contextual Routing
-    if (!results) {
-      await handleInitialSearch(textToSubmit);
-    } else {
-      await handleFollowUpChat(textToSubmit);
+  const handleManualSubmit = () => {
+    if (transcript.trim()) {
+      setRecognitionState('PROCESSING');
+      handleSubmit(transcript);
     }
-    
-    setIsProcessing(false);
-    setTranscript("");
   };
 
   // --- Voice Controls ---
@@ -261,9 +238,13 @@ function VoiceInterfaceContent() {
 
   const speakResponse = (text: string) => {
     window.speechSynthesis.cancel();
+    setRecognitionState('SPEAKING');
     const utterance = new SpeechSynthesisUtterance(text);
     setUtteranceVoice(utterance, langQuery);
-    utterance.onend = () => setIsPlaying(false);
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setRecognitionState('IDLE');
+    };
     utterance.onstart = () => setIsPlaying(true);
     setCurrentUtterance(utterance);
     window.speechSynthesis.speak(utterance);
@@ -280,6 +261,7 @@ function VoiceInterfaceContent() {
     }
     
     window.speechSynthesis.cancel();
+    setRecognitionState('SPEAKING');
     const t = TRANSLATIONS[langQuery] || TRANSLATIONS['en-IN'];
     const text = `${scheme.name}. ${scheme.description}. ${t.benefits}: ${scheme.benefits}. ${t.whyQualify}: ${scheme.matchDetails.reason}. ${t.requiredDocs}: ${scheme.required_documents?.join(', ')}.`;
     const utterance = new SpeechSynthesisUtterance(text);
@@ -287,6 +269,7 @@ function VoiceInterfaceContent() {
     utterance.onend = () => {
       setIsPlaying(false);
       setSpeakingScheme(null);
+      setRecognitionState('IDLE');
     };
     utterance.onstart = () => {
       setIsPlaying(true);
@@ -332,6 +315,7 @@ function VoiceInterfaceContent() {
     window.speechSynthesis.cancel();
     setIsPlaying(false);
     setSpeakingScheme(null);
+    setRecognitionState(prev => prev === 'SPEAKING' ? 'IDLE' : prev);
   };
 
   const repeatTTS = () => {
@@ -532,16 +516,15 @@ function VoiceInterfaceContent() {
             onChange={(e) => setTranscript(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-                handleSubmit();
+                handleManualSubmit();
               }
             }}
             placeholder="Type your query..." 
             className="flex-1 text-lg py-6 rounded-full px-6 shadow-sm border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900"
           />
           <Button 
-            onClick={() => handleSubmit()} 
-            disabled={!transcript.trim()}
+            onClick={() => handleManualSubmit()} 
+            disabled={!transcript.trim() || recognitionState === 'PROCESSING'}
             size="icon" 
             className="rounded-full bg-blue-600 hover:bg-blue-700 text-white shrink-0 w-12 h-12"
           >
