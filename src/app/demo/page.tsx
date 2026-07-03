@@ -466,9 +466,22 @@ function VoiceInterfaceContent() {
                     </div>
                   </CardContent>
                   <CardFooter className="bg-zinc-50 dark:bg-zinc-900/50 flex flex-col sm:flex-row gap-3 pt-4">
-                    <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700" onClick={() => window.open(getTranslatedLink(scheme.application_link), '_blank')}>
-                      <T lang={langQuery}>Apply Online</T>
-                    </Button>
+                    {scheme.application_link ? (
+                      <Button asChild className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white shadow-sm">
+                        <a href={getTranslatedLink(scheme.application_link)} target="_blank" rel="noopener noreferrer">
+                          <T lang={langQuery}>Apply Online</T>
+                        </a>
+                      </Button>
+                    ) : scheme.offline_process ? (
+                      <div className="w-full p-3 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-800 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-200">
+                        <strong><T lang={langQuery}>Offline Application:</T></strong> {scheme.offline_process}
+                        {scheme.nearest_office && <div className="mt-1"><strong><T lang={langQuery}>Nearest Office:</T></strong> {scheme.nearest_office}</div>}
+                      </div>
+                    ) : (
+                      <Button disabled className="w-full sm:w-auto bg-zinc-200 text-zinc-500">
+                        <T lang={langQuery}>Application link not available</T>
+                      </Button>
+                    )}
                     <Button variant="outline" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.google.com/maps/search/MeeSeva+or+CSC+center+near+me', '_blank')}>
                       <MapPin className="w-4 h-4" />
                       <T lang={langQuery}>Find Nearby Center</T>
