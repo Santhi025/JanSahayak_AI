@@ -34,7 +34,12 @@ const T = ({ children, lang }: { children: string, lang: string }) => {
     'Eligible': t.eligible,
     'Not Eligible': t.notEligible,
     'Need Info': t.needMoreInfo,
-    'Likely Eligible': t.likelyEligible
+    'Likely Eligible': t.likelyEligible,
+    'Try asking:': t.tryAsking || 'Try asking:',
+    'I am a farmer from Andhra Pradesh.': t.prompt1 || 'I am a farmer from Andhra Pradesh.',
+    'I am a college student from Telangana.': t.prompt2 || 'I am a college student from Telangana.',
+    'I am a pregnant woman from Karnataka.': t.prompt3 || 'I am a pregnant woman from Karnataka.',
+    'I am a 68-year-old senior citizen from Kerala.': t.prompt4 || 'I am a 68-year-old senior citizen from Kerala.'
   };
 
   return <>{stringMap[children] || children}</>;
@@ -390,6 +395,34 @@ function VoiceInterfaceContent() {
                 <T lang={langQuery}>Tell us about yourself (age, occupation, state, gender, income) and we will find the best schemes for you.</T>
               </p>
             </div>
+            
+            {/* Try Asking Section */}
+            <div className="flex flex-col items-center space-y-4 mt-8 w-full max-w-2xl mx-auto">
+              <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider"><T lang={langQuery}>Try asking:</T></p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {[
+                  { text: 'I am a farmer from Andhra Pradesh.', icon: '🌾' },
+                  { text: 'I am a college student from Telangana.', icon: '🎓' },
+                  { text: 'I am a pregnant woman from Karnataka.', icon: '🤰' },
+                  { text: 'I am a 68-year-old senior citizen from Kerala.', icon: '👴' },
+                ].map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      if (isListening) {
+                        stopListening();
+                      }
+                      setTranscript(prompt.text);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full text-sm text-zinc-700 dark:text-zinc-300 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                  >
+                    <span>{prompt.icon}</span>
+                    <span><T lang={langQuery}>{prompt.text}</T></span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
           </div>
         )}
 
