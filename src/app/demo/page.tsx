@@ -11,6 +11,17 @@ import { SUPPORTED_LANGUAGES, TRANSLATIONS } from "@/lib/translations";
 import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
 import { voiceManager } from "@/lib/voice-manager";
 
+// --- Clean HTML helper ---
+const cleanHtmlText = (text: string): string => {
+  if (!text) return "";
+  return text
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/?[^>]+(>|$)/g, "")
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s*\n\s*\n+/g, '\n\n')
+    .trim();
+};
+
 // --- Static Dictionary Translation ---
 const T = ({ children, lang }: { children: string, lang: string }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS['en-IN'];
@@ -285,8 +296,8 @@ function VoiceInterfaceContent() {
     // Chunk for natural pauses
     const textChunks = [
       `${scheme.name}.`,
-      `${scheme.description}.`,
-      `${t.benefits}: ${scheme.benefits}.`,
+      `${cleanHtmlText(scheme.description)}.`,
+      `${t.benefits}: ${cleanHtmlText(scheme.benefits)}.`,
       `${t.whyQualify}: ${scheme.matchDetails.reason}.`,
       `${t.requiredDocs}: ${scheme.required_documents?.join(', ')}.`
     ];
@@ -316,8 +327,8 @@ function VoiceInterfaceContent() {
     const allChunks: string[] = [];
     results.forEach((scheme: any) => {
       allChunks.push(`${scheme.name}.`);
-      allChunks.push(`${scheme.description}.`);
-      allChunks.push(`${t.benefits}: ${scheme.benefits}.`);
+      allChunks.push(`${cleanHtmlText(scheme.description)}.`);
+      allChunks.push(`${t.benefits}: ${cleanHtmlText(scheme.benefits)}.`);
       allChunks.push(`${t.whyQualify}: ${scheme.matchDetails.reason}.`);
       allChunks.push(`${t.requiredDocs}: ${scheme.required_documents?.join(', ')}.`);
     });
@@ -497,7 +508,7 @@ function VoiceInterfaceContent() {
                     <div className="flex justify-between items-start gap-4">
                       <div>
                         <CardTitle className="text-xl text-blue-700 dark:text-blue-400">{scheme.name}</CardTitle>
-                        <CardDescription className="mt-1 text-sm">{scheme.description}</CardDescription>
+                        <CardDescription className="mt-1 text-sm whitespace-pre-line">{cleanHtmlText(scheme.description)}</CardDescription>
                       </div>
                       <Badge className={
                         scheme.matchDetails.eligibility === 'Eligible' || scheme.matchDetails.eligibility === 'पात्र' || scheme.matchDetails.eligibility === 'அர்ஹులు' ? 'bg-green-100 text-green-800 hover:bg-green-100' :
@@ -520,7 +531,7 @@ function VoiceInterfaceContent() {
                     <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg flex items-center justify-between">
                       <div>
                         <p className="font-medium text-blue-900 dark:text-blue-200"><T lang={langQuery}>Benefits</T></p>
-                        <p className="text-sm text-blue-800 dark:text-blue-300">{scheme.benefits}</p>
+                        <p className="text-sm text-blue-800 dark:text-blue-300 whitespace-pre-line">{cleanHtmlText(scheme.benefits)}</p>
                       </div>
                       <Button 
                         size="icon" 
@@ -548,21 +559,21 @@ function VoiceInterfaceContent() {
                     </div>
                   </CardContent>
                   <CardFooter className="bg-zinc-50 dark:bg-zinc-900/50 flex flex-col sm:flex-row gap-3 pt-4">
-                    {scheme.application_link ? (
-                      <a href={getTranslatedLink(scheme.application_link)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                        <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-sm">
-                          <T lang={langQuery}>Apply Online</T>
-                        </Button>
-                      </a>
-                    ) : scheme.offline_process ? (
+                    <a 
+                      href={getTranslatedLink(scheme.application_link || `https://www.google.com/search?q=${encodeURIComponent(scheme.name + ' apply online')}`)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="w-full sm:w-auto"
+                    >
+                      <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-sm font-semibold">
+                        <T lang={langQuery}>Apply Online</T>
+                      </Button>
+                    </a>
+                    {scheme.offline_process && (
                       <div className="w-full p-3 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-800 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-200">
                         <strong><T lang={langQuery}>Offline Application:</T></strong> {scheme.offline_process}
                         {scheme.nearest_office && <div className="mt-1"><strong><T lang={langQuery}>Nearest Office:</T></strong> {scheme.nearest_office}</div>}
                       </div>
-                    ) : (
-                      <Button disabled className="w-full sm:w-auto bg-zinc-200 text-zinc-500">
-                        <T lang={langQuery}>Application link not available</T>
-                      </Button>
                     )}
                     <Button variant="outline" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.google.com/maps/search/MeeSeva+or+CSC+center+near+me', '_blank')}>
                       <MapPin className="w-4 h-4" />
