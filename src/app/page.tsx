@@ -8,7 +8,81 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function LandingPage() {
   const [selectedLang, setSelectedLang] = useState('en-IN');
-  const t = TRANSLATIONS[selectedLang] || TRANSLATIONS['en-IN'];
+  const [dynamicTranslations, setDynamicTranslations] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  const LANDING_KEYS = [
+    'tryLiveDemo',
+    'heroTag',
+    'heroTitlePart1',
+    'heroTitlePart2',
+    'heroDesc',
+    'exploreSolution',
+    'mapTitle',
+    'mapDesc',
+    'vaActive',
+    'listeningIn',
+    'infoGapTitle',
+    'infoGapDesc',
+    'langBarrier',
+    'langBarrierDesc',
+    'discIssue',
+    'discIssueDesc',
+    'digLit',
+    'digLitDesc',
+    'hiwTitle',
+    'hiwDesc',
+    'step1Title',
+    'step1Desc',
+    'step2Title',
+    'step2Desc',
+    'step3Title',
+    'step3Desc',
+    'tryYourself'
+  ];
+
+  // Dynamically translate homepage UI when a language other than standard ones is chosen
+  useEffect(() => {
+    const translateUI = async () => {
+      // Statically supported languages are en-IN, hi-IN, te-IN, ta-IN, mr-IN, bn-IN
+      const isStatic = ['en-IN', 'hi-IN', 'te-IN', 'ta-IN', 'mr-IN', 'bn-IN'].includes(selectedLang);
+      if (!isStatic) {
+        setIsTranslating(true);
+        try {
+          const texts = LANDING_KEYS.map(key => TRANSLATIONS['en-IN'][key]);
+          const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texts, targetLang: selectedLang })
+          });
+          const data = await res.json();
+          if (data.translations) {
+            // Map the translated texts back to the original keys
+            const mapped: Record<string, string> = {};
+            LANDING_KEYS.forEach(key => {
+              const englishText = TRANSLATIONS['en-IN'][key];
+              mapped[key] = data.translations[englishText] || englishText;
+            });
+            setDynamicTranslations(mapped);
+          }
+        } catch (e) {
+          console.error("Dynamic UI translation failed:", e);
+        } finally {
+          setIsTranslating(false);
+        }
+      } else {
+        setDynamicTranslations({});
+      }
+    };
+
+    translateUI();
+  }, [selectedLang]);
+
+  // Merge static translations and dynamic translations
+  const t = {
+    ...(TRANSLATIONS[selectedLang] || TRANSLATIONS['en-IN']),
+    ...dynamicTranslations
+  };
   
   // Parallax effect for hero background
   const { scrollY } = useScroll();
@@ -33,17 +107,16 @@ export default function LandingPage() {
               <span className="font-extrabold text-xl tracking-tight text-white">JanSahayak<span className="text-cyan-400">.AI</span></span>
             </div>
             
-            <div className="hidden md:flex items-center space-x-2 text-sm font-medium text-zinc-400">
-              {SUPPORTED_LANGUAGES.slice(0, 4).map(lang => (
-                <button 
-                  key={lang.code}
-                  onClick={() => setSelectedLang(lang.code)}
-                  className={`px-3 py-1.5 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${selectedLang === lang.code ? 'bg-cyan-500/10 text-cyan-400 font-semibold ring-1 ring-cyan-500/50' : 'hover:bg-zinc-800 hover:text-zinc-200'}`}
-                >
-                  {selectedLang === lang.code && <Check className="w-3 h-3" />}
-                  {lang.label}
-                </button>
-              ))}
+            <div className="flex items-center gap-3">
+              <select 
+                value={selectedLang}
+                onChange={(e) => setSelectedLang(e.target.value)}
+                className="text-sm border border-slate-700 rounded-full px-3 py-1.5 bg-slate-900/80 text-slate-100 outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer"
+              >
+                {SUPPORTED_LANGUAGES.map(l => (
+                  <option key={l.code} value={l.code} className="bg-slate-900 text-slate-100">{l.label}</option>
+                ))}
+              </select>
             </div>
 
             <div className="flex items-center">
