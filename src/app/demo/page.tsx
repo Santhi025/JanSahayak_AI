@@ -651,16 +651,16 @@ function VoiceInterfaceContent() {
                           size="icon"
                           variant="ghost"
                           title="Read scheme aloud"
-                          className={`rounded-full w-10 h-10 shrink-0 transition-all ${
+                          className={`rounded-full w-11 h-11 shrink-0 transition-all shadow-md ${
                             speakingScheme === scheme.id
-                              ? 'text-red-600 bg-red-100 hover:bg-red-200 animate-pulse'
-                              : 'text-blue-600 bg-blue-50 hover:bg-blue-100'
+                              ? 'bg-gradient-to-br from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 shadow-red-300 animate-pulse'
+                              : 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-blue-300 hover:shadow-blue-400 hover:scale-110'
                           }`}
                           onClick={() => playTTS(scheme, i)}
                         >
                           {speakingScheme === scheme.id && isPlaying
-                            ? <Square className="w-6 h-6 fill-current" />
-                            : <Volume2 className="w-6 h-6" />}
+                            ? <Square className="w-5 h-5 fill-current" />
+                            : <Volume2 className="w-6 h-6 stroke-[2.5]" />}
                         </Button>
                       </div>
                     </div>
