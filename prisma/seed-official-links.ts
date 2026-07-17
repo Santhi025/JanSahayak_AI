@@ -181,7 +181,6 @@ const OFFICIAL_LINKS: Record<string, string> = {
   'youth-and-eco-club': 'https://moef.gov.in/',
   'young-achievers-awards': 'https://nyks.nic.in/',
   'vehicle-loan-scheme-gtkvn': 'https://gtkvn.gujarat.gov.in/',
-  'vocational-training-of-destitute-women-and-adolescent-girls': 'https://wcd.nic.in/',
   'winter-cropping-development-of-cultivable-land-scheme': 'https://agri.rajasthan.gov.in/',
   'world-war-ii-pension': 'https://ksb.gov.in/',
   'workers-for-class-9th-to-12th-through-national-scholarship-jkbocwwb': 'https://bocw.labour.gov.in/',
