@@ -694,27 +694,55 @@ function VoiceInterfaceContent() {
                       </ul>
                     </div>
                   </CardContent>
-                  <CardFooter className="bg-zinc-50 dark:bg-zinc-900/50 flex flex-col sm:flex-row gap-3 pt-4">
-                    <a 
-                      href={getTranslatedLink(scheme.application_link || `https://www.google.com/search?q=${encodeURIComponent(scheme.name + ' apply online')}`)} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="w-full sm:w-auto"
-                    >
-                      <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-sm font-semibold">
-                        <T lang={langQuery}>Apply Online</T>
+                  <CardFooter className="bg-zinc-50 dark:bg-zinc-900/50 flex flex-col gap-3 pt-4">
+                    <div className="w-full flex flex-col sm:flex-row gap-3">
+                      {/* Official Apply Online button — only shown when a real portal URL exists */}
+                      {scheme.application_link ? (
+                        <a
+                          href={getTranslatedLink(scheme.application_link)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full sm:w-auto"
+                        >
+                          <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-sm font-semibold gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                            <T lang={langQuery}>Apply Online</T>
+                          </Button>
+                        </a>
+                      ) : (
+                        /* No official portal — show Google Search as a clearly-labelled fallback */
+                        <a
+                          href={`https://www.google.com/search?q=${encodeURIComponent(scheme.name + ' official government portal apply online India')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full sm:w-auto"
+                        >
+                          <Button variant="outline" className="w-full border-blue-300 text-blue-700 hover:bg-blue-50 font-semibold gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            Search Official Portal
+                          </Button>
+                        </a>
+                      )}
+                      <Button variant="outline" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.google.com/maps/search/MeeSeva+or+CSC+center+near+me', '_blank')}>
+                        <MapPin className="w-4 h-4" />
+                        <T lang={langQuery}>Find Nearby Center</T>
                       </Button>
-                    </a>
+                    </div>
+
+                    {/* Offline application info — shown when available */}
                     {scheme.offline_process && (
                       <div className="w-full p-3 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-800 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-200">
                         <strong><T lang={langQuery}>Offline Application:</T></strong> {scheme.offline_process}
                         {scheme.nearest_office && <div className="mt-1"><strong><T lang={langQuery}>Nearest Office:</T></strong> {scheme.nearest_office}</div>}
                       </div>
                     )}
-                    <Button variant="outline" className="w-full sm:w-auto gap-2" onClick={() => window.open('https://www.google.com/maps/search/MeeSeva+or+CSC+center+near+me', '_blank')}>
-                      <MapPin className="w-4 h-4" />
-                      <T lang={langQuery}>Find Nearby Center</T>
-                    </Button>
+
+                    {/* Show a notice when neither link nor offline process is available */}
+                    {!scheme.application_link && !scheme.offline_process && (
+                      <div className="w-full p-3 rounded-lg bg-zinc-100 border border-zinc-200 text-sm text-zinc-600 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-400">
+                        ℹ️ Visit your nearest <strong>Common Service Centre (CSC)</strong> or <strong>District Collectorate</strong> for application assistance.
+                      </div>
+                    )}
                   </CardFooter>
                 </Card>
               ))
