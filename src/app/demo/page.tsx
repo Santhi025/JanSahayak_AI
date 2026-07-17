@@ -22,47 +22,116 @@ const cleanHtmlText = (text: string): string => {
     .trim();
 };
 
-// --- Static Dictionary Translation ---
-const T = ({ children, lang }: { children: string, lang: string }) => {
-  const t = TRANSLATIONS[lang] || TRANSLATIONS['en-IN'];
-  
-  const stringMap: Record<string, string> = {
-    'Home': t.home,
-    'Discover Government Schemes tailored for you.': t.discoverTitle,
-    'Tell us about yourself (age, occupation, state, gender, income) and we will find the best schemes for you.': t.discoverDesc,
-    'Eligible Schemes': t.eligibleSchemes,
-    'No matching schemes found for this profile.': t.noSchemes,
-    'Why you qualify': t.whyQualify,
-    'Benefits': t.benefits,
-    'Required Documents': t.requiredDocs,
-    'Apply Online': t.applyOnline,
-    'Find Nearby Center': t.findCenter,
-    'Listening (will auto-submit when you stop speaking)...': t.listeningAuto,
-    'Listening...': t.listening,
-    'Tap to speak, or type below': t.tapToSpeak,
-    'Understanding your profile...': t.processing,
-    'Finding eligible schemes...': t.finding,
-    'Eligible': t.eligible,
-    'Not Eligible': t.notEligible,
-    'Need Info': t.needMoreInfo,
-    'Likely Eligible': t.likelyEligible,
-    'Try asking:': t.tryAsking || 'Try asking:',
-    'I am a farmer from Andhra Pradesh.': t.prompt1 || 'I am a farmer from Andhra Pradesh.',
-    'I am a college student from Telangana.': t.prompt2 || 'I am a college student from Telangana.',
-    'I am a pregnant woman from Karnataka.': t.prompt3 || 'I am a pregnant woman from Karnataka.',
-    'I am a 68-year-old senior citizen from Kerala.': t.prompt4 || 'I am a 68-year-old senior citizen from Kerala.'
-  };
-
-  return <>{stringMap[children] || children}</>;
-};
+// --- Static T component placeholder ---
+// (Local T component is defined inside VoiceInterfaceContent to support dynamic translation)
 
 function VoiceInterfaceContent() {
   const searchParams = useSearchParams();
   const langQuery = searchParams.get('lang') || 'en-IN';
   
   const [currentLang, setCurrentLang] = useState(langQuery);
-  const [processingState, setProcessingState] = useState(""); 
+  const [processingState, setProcessingState] = useState("");
   
+  const [dynamicTranslations, setDynamicTranslations] = useState<Record<string, string>>({});
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  // List of all UI strings to translate dynamically
+  const UI_STRINGS = [
+    'Home',
+    'Discover Government Schemes tailored for you.',
+    'Tell us about yourself (age, occupation, state, gender, income) and we will find the best schemes for you.',
+    'Eligible Schemes',
+    'No matching schemes found for this profile.',
+    'Why you qualify',
+    'Benefits',
+    'Required Documents',
+    'Apply Online',
+    'Find Nearby Center',
+    'Listening (will auto-submit when you stop speaking)...',
+    'Listening...',
+    'Tap to speak, or type below',
+    'Understanding your profile...',
+    'Finding eligible schemes...',
+    'Eligible',
+    'Not Eligible',
+    'Need Info',
+    'Likely Eligible',
+    'Try asking:',
+    'I am a farmer from Andhra Pradesh.',
+    'I am a college student from Telangana.',
+    'I am a pregnant woman from Karnataka.',
+    'I am a 68-year-old senior citizen from Kerala.',
+    'Offline Application:',
+    'Nearest Office:'
+  ];
+
+  // Dynamically translate UI when a language other than standard ones is chosen
+  useEffect(() => {
+    const translateUI = async () => {
+      // Statically supported languages are en-IN, hi-IN, te-IN, ta-IN, mr-IN, bn-IN
+      const isStatic = ['en-IN', 'hi-IN', 'te-IN', 'ta-IN', 'mr-IN', 'bn-IN'].includes(currentLang);
+      if (!isStatic) {
+        setIsTranslating(true);
+        try {
+          const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texts: UI_STRINGS, targetLang: currentLang })
+          });
+          const data = await res.json();
+          if (data.translations) {
+            setDynamicTranslations(data.translations);
+          }
+        } catch (e) {
+          console.error("Dynamic UI translation failed:", e);
+        } finally {
+          setIsTranslating(false);
+        }
+      } else {
+        setDynamicTranslations({});
+      }
+    };
+
+    translateUI();
+  }, [currentLang]);
+
+  // Local Translate component
+  const T = ({ children, lang }: { children: string, lang: string }) => {
+    if (dynamicTranslations[children]) {
+      return <>{dynamicTranslations[children]}</>;
+    }
+
+    const t = TRANSLATIONS[lang] || TRANSLATIONS['en-IN'];
+    
+    const stringMap: Record<string, string> = {
+      'Home': t.home,
+      'Discover Government Schemes tailored for you.': t.discoverTitle,
+      'Tell us about yourself (age, occupation, state, gender, income) and we will find the best schemes for you.': t.discoverDesc,
+      'Eligible Schemes': t.eligibleSchemes,
+      'No matching schemes found for this profile.': t.noSchemes,
+      'Why you qualify': t.whyQualify,
+      'Benefits': t.benefits,
+      'Required Documents': t.requiredDocs,
+      'Apply Online': t.applyOnline,
+      'Find Nearby Center': t.findCenter,
+      'Listening (will auto-submit when you stop speaking)...': t.listeningAuto,
+      'Listening...': t.listening,
+      'Tap to speak, or type below': t.tapToSpeak,
+      'Understanding your profile...': t.processing,
+      'Finding eligible schemes...': t.finding,
+      'Eligible': t.eligible,
+      'Not Eligible': t.notEligible,
+      'Need Info': t.needMoreInfo,
+      'Likely Eligible': t.likelyEligible,
+      'Try asking:': t.tryAsking || 'Try asking:',
+      'I am a farmer from Andhra Pradesh.': t.prompt1 || 'I am a farmer from Andhra Pradesh.',
+      'I am a college student from Telangana.': t.prompt2 || 'I am a college student from Telangana.',
+      'I am a pregnant woman from Karnataka.': t.prompt3 || 'I am a pregnant woman from Karnataka.',
+      'I am a 68-year-old senior citizen from Kerala.': t.prompt4 || 'I am a 68-year-old senior citizen from Kerala.'
+    };
+
+    return <>{stringMap[children] || children}</>;
+  };
   const [profile, setProfile] = useState<any>(null);
   const [results, setResults] = useState<any[] | null>(null);
   
