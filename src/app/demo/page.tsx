@@ -47,7 +47,7 @@ function VoiceInterfaceContent() {
     'Required Documents',
     'Apply Online',
     'Find Nearby Center',
-    'Listening (will auto-submit when you stop speaking)...',
+    'Listening... Press \u27a4 or Enter to submit',
     'Listening...',
     'Tap to speak, or type below',
     'Understanding your profile...',
@@ -348,6 +348,8 @@ function VoiceInterfaceContent() {
 
   const handleManualSubmit = () => {
     if (transcript.trim()) {
+      // Stop mic first so it doesn't pick up the AI's spoken response
+      if (isListening) stopListening();
       setRecognitionState('PROCESSING');
       handleSubmit(transcript);
     }
@@ -737,7 +739,9 @@ function VoiceInterfaceContent() {
         </div>
 
         <div className="text-sm font-medium text-zinc-500 mb-2 h-5">
-          {isListening ? <T lang={langQuery}>Listening (will auto-submit when you stop speaking)...</T> : <T lang={langQuery}>Tap to speak, or type below</T>}
+          {isListening
+            ? <T lang={langQuery}>Listening... Press ➤ or Enter to submit</T>
+            : <T lang={langQuery}>Tap to speak, or type below</T>}
         </div>
 
         <div className="w-full max-w-2xl flex items-center gap-3">
