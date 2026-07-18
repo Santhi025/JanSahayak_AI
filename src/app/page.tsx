@@ -102,29 +102,29 @@ export default function LandingPage() {
   const yBg = useTransform(scrollY, [0, 1000], [0, 300]);
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-slate-100 font-sans selection:bg-cyan-500/30 overflow-hidden">
+    <div className="min-h-screen bg-[#080E1C] text-slate-100 font-sans selection:bg-blue-600/30 overflow-hidden">
       
       {/* Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="sticky top-0 z-50 w-full border-b border-slate-800/50 bg-[#0B1120]/80 backdrop-blur-xl"
+        className="sticky top-0 z-50 w-full border-b border-blue-900/40 bg-[#080E1C]/85 backdrop-blur-xl"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-cyan-400 to-indigo-500 p-1.5 rounded-xl shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-800 p-1.5 rounded-xl shadow-[0_4px_15px_rgba(37,99,235,0.4)]">
                 <Globe className="w-5 h-5 text-white" />
               </div>
-              <span className="font-extrabold text-xl tracking-tight text-white">JanSahayak<span className="text-cyan-400">.AI</span></span>
+              <span className="font-extrabold text-xl tracking-tight text-white">JanSahayak<span className="text-blue-400">.AI</span></span>
             </div>
             
             <div className="flex items-center gap-3">
               <select 
                 value={selectedLang}
                 onChange={(e) => setSelectedLang(e.target.value)}
-                className="text-sm border border-slate-700 rounded-full px-3 py-1.5 bg-slate-900/80 text-slate-100 outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer"
+                className="text-sm border border-blue-900/50 rounded-full px-3 py-1.5 bg-blue-950/60 text-slate-100 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
                 {SUPPORTED_LANGUAGES.map(l => (
                   <option key={l.code} value={l.code} className="bg-slate-900 text-slate-100">{l.label}</option>
@@ -135,7 +135,7 @@ export default function LandingPage() {
             <div className="flex items-center">
               <Link 
                 href={`/demo?lang=${selectedLang}`}
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-500 transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-blue-800 px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(37,99,235,0.35)] hover:shadow-[0_4px_30px_rgba(37,99,235,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600 transition-all hover:scale-105 active:scale-95"
               >
                 {t.tryLiveDemo}
               </Link>
@@ -152,8 +152,8 @@ export default function LandingPage() {
             style={{ y: yBg }}
             className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] -z-10" 
           />
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[120px] -z-10 mix-blend-screen pointer-events-none" />
-          <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none" />
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-700/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-blue-900/15 rounded-full blur-[150px] -z-10 pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -165,13 +165,13 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="max-w-2xl"
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-semibold mb-6 shadow-[0_0_15px_rgba(34,211,238,0.15)]">
-                  <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-600/10 border border-blue-600/30 text-blue-300 text-sm font-semibold mb-6 shadow-[0_2px_15px_rgba(37,99,235,0.15)]">
+                  <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse"></span>
                   {t.heroTag}
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1] mb-6">
                   {t.heroTitlePart1} <br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-500 to-indigo-500">
                     {t.heroTitlePart2}
                   </span>
                 </h1>
@@ -182,7 +182,7 @@ export default function LandingPage() {
                 <div className="flex flex-col sm:flex-row gap-5">
                   <Link 
                     href={`/demo?lang=${selectedLang}`}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-4 text-base font-bold text-white shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95 transition-all"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-4 text-base font-bold text-white shadow-[0_4px_30px_rgba(37,99,235,0.4)] hover:shadow-[0_4px_40px_rgba(37,99,235,0.6)] hover:scale-105 active:scale-95 transition-all"
                   >
                     {t.tryLiveDemo} <ArrowRight className="w-5 h-5" />
                   </Link>
@@ -202,25 +202,25 @@ export default function LandingPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="relative mx-auto w-full max-w-lg lg:max-w-none"
               >
-                <div className="relative rounded-2xl bg-zinc-900 shadow-2xl shadow-cyan-900/20 ring-1 ring-zinc-800 p-2 overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-fuchsia-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="relative rounded-2xl bg-[#0d1730] shadow-2xl shadow-blue-900/30 ring-1 ring-blue-900/40 p-2 overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-700/10 to-indigo-700/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
                   
                   {/* Mock Dashboard UI */}
-                  <div className="relative bg-zinc-950 rounded-xl border border-zinc-800/80 shadow-inner overflow-hidden flex flex-col h-[520px]">
-                    <div className="border-b border-zinc-800/80 p-4 bg-zinc-900/50 flex justify-between items-center backdrop-blur-sm">
+                  <div className="relative bg-[#070d1a] rounded-xl border border-blue-900/40 shadow-inner overflow-hidden flex flex-col h-[520px]">
+                    <div className="border-b border-blue-900/30 p-4 bg-blue-950/30 flex justify-between items-center backdrop-blur-sm">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center ring-1 ring-cyan-500/50">
-                          <Mic className="w-5 h-5 text-cyan-400" />
+                        <div className="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center ring-1 ring-blue-600/40">
+                          <Mic className="w-5 h-5 text-blue-300" />
                         </div>
                         <div>
                           <p className="text-sm font-bold text-zinc-100">{t.vaActive}</p>
-                          <p className="text-xs text-cyan-400/80">{t.listeningIn}</p>
+                          <p className="text-xs text-blue-300/80">{t.listeningIn}</p>
                         </div>
                       </div>
                       <div className="flex gap-1.5">
-                        <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse delay-75"></div>
-                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse delay-150"></div>
+                        <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse delay-75"></div>
+                        <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse delay-150"></div>
                       </div>
                     </div>
                     
@@ -244,10 +244,10 @@ export default function LandingPage() {
                          transition={{ delay: 2.5 }}
                          className="flex gap-4 flex-row-reverse"
                        >
-                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(34,211,238,0.5)]">
-                           <Globe className="w-4 h-4 text-white" />
-                         </div>
-                         <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 text-cyan-50 rounded-2xl rounded-tr-none px-4 py-3 text-sm max-w-[80%] shadow-md border border-cyan-500/30 backdrop-blur-md">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-800 flex items-center justify-center flex-shrink-0 shadow-[0_2px_10px_rgba(37,99,235,0.5)]">
+                            <Globe className="w-4 h-4 text-white" />
+                          </div>
+                          <div className="bg-gradient-to-r from-blue-700/20 to-blue-900/20 text-blue-50 rounded-2xl rounded-tr-none px-4 py-3 text-sm max-w-[80%] shadow-md border border-blue-600/30 backdrop-blur-md">
                            I found 2 schemes for you based on your profile as a female farmer in Andhra Pradesh.
                          </div>
                        </motion.div>
@@ -265,8 +265,8 @@ export default function LandingPage() {
                           </div>
                           <p className="text-xs text-zinc-400 mb-3">₹6,000 per year minimum income support for farmers.</p>
                           <div className="flex gap-2">
-                            <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-1 text-xs font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Eligible</span>
-                            <span className="inline-flex items-center rounded-md bg-cyan-500/10 px-2 py-1 text-xs font-semibold text-cyan-400 ring-1 ring-inset ring-cyan-500/20">Agriculture</span>
+                             <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-1 text-xs font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">Eligible</span>
+                             <span className="inline-flex items-center rounded-md bg-blue-600/10 px-2 py-1 text-xs font-semibold text-blue-300 ring-1 ring-inset ring-blue-600/20">Agriculture</span>
                           </div>
                        </motion.div>
                        
@@ -281,8 +281,8 @@ export default function LandingPage() {
         </section>
 
         {/* Impact Map Section */}
-        <section className="py-24 bg-[#0F172A] border-y border-slate-800/50 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120] via-transparent to-[#0B1120] z-10 pointer-events-none" />
+        <section className="py-24 bg-[#0a1225] border-y border-blue-900/30 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#080E1C] via-transparent to-[#080E1C] z-10 pointer-events-none" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -290,7 +290,7 @@ export default function LandingPage() {
               viewport={{ once: true, margin: "-100px" }}
               className="text-center max-w-3xl mx-auto mb-16"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-700/10 border border-blue-700/30 text-blue-300 text-sm font-semibold mb-4">
                 <MapPin className="w-4 h-4" />
                 Targeting Ground Zero
               </div>
@@ -298,7 +298,7 @@ export default function LandingPage() {
               <p className="text-xl text-slate-400 font-light">{t.mapDesc || 'Targeting regions with low digital literacy and high dependency on agricultural welfare.'}</p>
             </motion.div>
 
-            <div className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden bg-slate-900/40 border border-slate-800/80 shadow-[0_0_50px_rgba(34,211,238,0.1)] p-8">
+            <div className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden bg-blue-950/20 border border-blue-900/30 shadow-[0_8px_50px_rgba(37,99,235,0.1)] p-8">
               <div className="relative aspect-[4/3] w-full max-w-2xl mx-auto">
                 {/* Background Map Image */}
                 <img src="/india-map-neon.png" alt="India Map Outline" className="w-full h-full object-contain opacity-80 mix-blend-screen" />
@@ -307,28 +307,28 @@ export default function LandingPage() {
                 {/* UP/Bihar Region */}
                 <div className="absolute top-[42%] left-[56%] group">
                   <div className="relative flex items-center justify-center cursor-pointer">
-                    <div className="w-4 h-4 bg-fuchsia-500 rounded-full animate-ping absolute"></div>
-                    <div className="w-3 h-3 bg-fuchsia-400 rounded-full relative z-10 shadow-[0_0_10px_rgba(217,70,239,0.8)]"></div>
+                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-ping absolute"></div>
+                    <div className="w-3 h-3 bg-blue-400 rounded-full relative z-10 shadow-[0_2px_10px_rgba(37,99,235,0.7)]"></div>
                   </div>
                   {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-slate-950 border border-fuchsia-500/30 rounded-xl p-3 shadow-[0_0_20px_rgba(217,70,239,0.2)] z-30">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-[#0a1225] border border-blue-700/30 rounded-xl p-3 shadow-[0_4px_20px_rgba(37,99,235,0.2)] z-30">
                     <p className="text-white font-bold text-sm mb-1">Uttar Pradesh & Bihar</p>
                     <p className="text-xs text-slate-400">Literacy: 67%</p>
-                    <p className="text-xs text-fuchsia-400 mt-1">High Need: PM Kisan, Ration Cards</p>
+                    <p className="text-xs text-blue-300 mt-1">High Need: PM Kisan, Ration Cards</p>
                   </div>
                 </div>
 
                 {/* Central India */}
                 <div className="absolute top-[50%] left-[45%] group">
                   <div className="relative flex items-center justify-center cursor-pointer">
-                    <div className="w-4 h-4 bg-cyan-500 rounded-full animate-ping absolute delay-150"></div>
-                    <div className="w-3 h-3 bg-cyan-400 rounded-full relative z-10 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+                    <div className="w-4 h-4 bg-indigo-500 rounded-full animate-ping absolute delay-150"></div>
+                    <div className="w-3 h-3 bg-indigo-400 rounded-full relative z-10 shadow-[0_2px_10px_rgba(99,102,241,0.7)]"></div>
                   </div>
                   {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-slate-950 border border-cyan-500/30 rounded-xl p-3 shadow-[0_0_20px_rgba(34,211,238,0.2)] z-30">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-[#0a1225] border border-indigo-700/30 rounded-xl p-3 shadow-[0_4px_20px_rgba(99,102,241,0.2)] z-30">
                     <p className="text-white font-bold text-sm mb-1">Madhya Pradesh</p>
                     <p className="text-xs text-slate-400">Literacy: 69%</p>
-                    <p className="text-xs text-cyan-400 mt-1">High Need: Crop Insurance</p>
+                    <p className="text-xs text-indigo-300 mt-1">High Need: Crop Insurance</p>
                   </div>
                 </div>
 
@@ -351,7 +351,7 @@ export default function LandingPage() {
         </section>
 
         {/* Stats / Value Prop Section */}
-        <section className="py-24 bg-zinc-900/50 border-y border-zinc-800 relative">
+        <section className="py-24 bg-blue-950/10 border-y border-blue-900/20 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -369,12 +369,12 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.1 }}
-                className="bg-zinc-950 rounded-3xl p-8 border border-zinc-800/80 text-center hover:border-cyan-500/30 transition-colors group relative overflow-hidden"
+                className="bg-[#0d1730] rounded-3xl p-8 border border-blue-900/30 text-center hover:border-blue-600/40 transition-colors group relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-b from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
-                  <div className="mx-auto w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-zinc-800 group-hover:ring-cyan-500/50 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] transition-all">
-                    <Globe className="w-7 h-7 text-cyan-400" />
+                  <div className="mx-auto w-14 h-14 bg-blue-950/50 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-blue-900/50 group-hover:ring-blue-500/50 group-hover:shadow-[0_2px_20px_rgba(37,99,235,0.2)] transition-all">
+                    <Globe className="w-7 h-7 text-blue-400" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">{t.langBarrier}</h3>
                   <p className="text-zinc-400 leading-relaxed">{t.langBarrierDesc}</p>
@@ -386,12 +386,12 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.2 }}
-                className="bg-zinc-950 rounded-3xl p-8 border border-zinc-800/80 text-center hover:border-fuchsia-500/30 transition-colors group relative overflow-hidden"
+                className="bg-[#0d1730] rounded-3xl p-8 border border-blue-900/30 text-center hover:border-indigo-600/40 transition-colors group relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-fuchsia-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
-                  <div className="mx-auto w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-zinc-800 group-hover:ring-fuchsia-500/50 group-hover:shadow-[0_0_20px_rgba(217,70,239,0.2)] transition-all">
-                    <Search className="w-7 h-7 text-fuchsia-400" />
+                  <div className="mx-auto w-14 h-14 bg-blue-950/50 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-blue-900/50 group-hover:ring-indigo-500/50 group-hover:shadow-[0_2px_20px_rgba(99,102,241,0.2)] transition-all">
+                    <Search className="w-7 h-7 text-indigo-400" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">{t.discIssue}</h3>
                   <p className="text-zinc-400 leading-relaxed">{t.discIssueDesc}</p>
@@ -403,12 +403,12 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.3 }}
-                className="bg-zinc-950 rounded-3xl p-8 border border-zinc-800/80 text-center hover:border-blue-500/30 transition-colors group relative overflow-hidden"
+                className="bg-[#0d1730] rounded-3xl p-8 border border-blue-900/30 text-center hover:border-blue-500/40 transition-colors group relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative z-10">
-                  <div className="mx-auto w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-zinc-800 group-hover:ring-blue-500/50 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all">
-                    <Users className="w-7 h-7 text-blue-400" />
+                  <div className="mx-auto w-14 h-14 bg-blue-950/50 rounded-2xl flex items-center justify-center mb-8 ring-1 ring-blue-900/50 group-hover:ring-blue-500/50 group-hover:shadow-[0_2px_20px_rgba(37,99,235,0.2)] transition-all">
+                    <Users className="w-7 h-7 text-blue-300" />
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">{t.digLit}</h3>
                   <p className="text-zinc-400 leading-relaxed">{t.digLitDesc}</p>
@@ -419,8 +419,8 @@ export default function LandingPage() {
         </section>
 
         {/* Project Mind Map Section (Moved Above How It Works) */}
-        <section className="py-24 bg-[#0B1120] border-t border-slate-800/50 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-[#0B1120] to-[#0B1120] pointer-events-none" />
+        <section className="py-24 bg-[#080E1C] border-t border-blue-900/30 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#080E1C] to-[#080E1C] pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div 
@@ -443,13 +443,13 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                className="bg-slate-900 border-2 border-cyan-500/50 rounded-2xl p-6 text-center shadow-[0_0_30px_rgba(34,211,238,0.2)] z-20 relative cursor-default"
+                className="bg-[#0d1730] border-2 border-blue-600/40 rounded-2xl p-6 text-center shadow-[0_4px_30px_rgba(37,99,235,0.2)] z-20 relative cursor-default"
               >
-                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center mb-3">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-800 rounded-xl flex items-center justify-center mb-3">
                   <Globe className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white">JanSahayak AI</h3>
-                <p className="text-sm text-cyan-400 mt-1 font-semibold">AI-powered Multilingual Welfare Platform</p>
+                <p className="text-sm text-blue-300 mt-1 font-semibold">AI-powered Multilingual Welfare Platform</p>
               </motion.div>
 
               {/* Vertical connecting line */}
@@ -458,7 +458,7 @@ export default function LandingPage() {
                 whileInView={{ height: 48 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="w-px bg-gradient-to-b from-cyan-500/50 to-slate-700"
+                className="w-px bg-gradient-to-b from-blue-600/50 to-blue-900/30"
               ></motion.div>
 
               {/* Grid of 6 main nodes */}
@@ -521,10 +521,10 @@ export default function LandingPage() {
                   whileHover={{ y: -5, scale: 1.02 }}
                   viewport={{ once: true }}
                   transition={{ type: "spring", delay: 0.6 }}
-                  className="bg-slate-900/80 border border-slate-700 rounded-xl p-5 hover:border-cyan-500/50 hover:shadow-[0_10px_30px_rgba(34,211,238,0.15)] transition-all group"
+                  className="bg-[#0d1730] border border-blue-900/40 rounded-xl p-5 hover:border-blue-500/40 hover:shadow-[0_4px_30px_rgba(37,99,235,0.15)] transition-all group"
                 >
                   <h4 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-500 group-hover:shadow-[0_0_10px_rgba(34,211,238,0.8)]"></span>
+                    <span className="w-2 h-2 rounded-full bg-blue-500 group-hover:shadow-[0_0_8px_rgba(37,99,235,0.7)]"></span>
                     AI Processing
                   </h4>
                   <ul className="text-sm text-slate-400 space-y-2">
@@ -605,7 +605,7 @@ export default function LandingPage() {
                 whileInView={{ height: 48 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 1.2 }}
-                className="w-px bg-gradient-to-b from-slate-700 to-blue-500/50 mt-6"
+                className="w-px bg-gradient-to-b from-blue-900/30 to-blue-600/40 mt-6"
               ></motion.div>
 
               {/* Final Output */}
@@ -615,7 +615,7 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", delay: 1.5 }}
-                className="bg-slate-900 border-2 border-blue-500/30 rounded-xl p-6 text-center w-full max-w-2xl relative z-20 shadow-[0_0_20px_rgba(59,130,246,0.15)]"
+                className="bg-[#0d1730] border-2 border-blue-700/40 rounded-xl p-6 text-center w-full max-w-2xl relative z-20 shadow-[0_4px_20px_rgba(37,99,235,0.15)]"
               >
                 <h3 className="text-xl font-bold text-white mb-3">Final Output</h3>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -664,7 +664,7 @@ export default function LandingPage() {
 
         {/* How it works (Moved below Mind Map) */}
         <section id="how-it-works" className="py-24 relative overflow-hidden">
-          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-fuchsia-500/10 rounded-full blur-[150px] -z-10 mix-blend-screen pointer-events-none" />
+          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-blue-800/10 rounded-full blur-[150px] -z-10 pointer-events-none" />
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -683,7 +683,7 @@ export default function LandingPage() {
                     viewport={{ once: true }}
                     className="flex gap-6 group"
                   >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-900 text-cyan-400 flex items-center justify-center font-bold text-xl ring-1 ring-zinc-800 group-hover:ring-cyan-500/50 group-hover:bg-cyan-500/10 transition-all">1</div>
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-950/60 text-blue-300 flex items-center justify-center font-bold text-xl ring-1 ring-blue-900/50 group-hover:ring-blue-500/50 group-hover:bg-blue-600/10 transition-all">1</div>
                     <div>
                       <h4 className="text-2xl font-bold text-white mb-2">{t.step1Title}</h4>
                       <p className="text-zinc-400 leading-relaxed text-lg">{t.step1Desc}</p>
@@ -697,7 +697,7 @@ export default function LandingPage() {
                     transition={{ delay: 0.1 }}
                     className="flex gap-6 group"
                   >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-900 text-fuchsia-400 flex items-center justify-center font-bold text-xl ring-1 ring-zinc-800 group-hover:ring-fuchsia-500/50 group-hover:bg-fuchsia-500/10 transition-all">2</div>
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-950/60 text-indigo-300 flex items-center justify-center font-bold text-xl ring-1 ring-blue-900/50 group-hover:ring-indigo-500/50 group-hover:bg-indigo-600/10 transition-all">2</div>
                     <div>
                       <h4 className="text-2xl font-bold text-white mb-2">{t.step2Title}</h4>
                       <p className="text-zinc-400 leading-relaxed text-lg">{t.step2Desc}</p>
@@ -711,7 +711,7 @@ export default function LandingPage() {
                     transition={{ delay: 0.2 }}
                     className="flex gap-6 group"
                   >
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-zinc-900 text-blue-400 flex items-center justify-center font-bold text-xl ring-1 ring-zinc-800 group-hover:ring-blue-500/50 group-hover:bg-blue-500/10 transition-all">3</div>
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-950/60 text-blue-200 flex items-center justify-center font-bold text-xl ring-1 ring-blue-900/50 group-hover:ring-blue-400/50 group-hover:bg-blue-500/10 transition-all">3</div>
                     <div>
                       <h4 className="text-2xl font-bold text-white mb-2">{t.step3Title}</h4>
                       <p className="text-zinc-400 leading-relaxed text-lg">{t.step3Desc}</p>
@@ -728,7 +728,7 @@ export default function LandingPage() {
                 >
                   <Link 
                     href={`/demo?lang=${selectedLang}`}
-                    className="inline-flex items-center gap-2 text-cyan-400 font-bold text-lg hover:text-cyan-300 transition-colors group"
+                    className="inline-flex items-center gap-2 text-blue-300 font-bold text-lg hover:text-blue-200 transition-colors group"
                   >
                     {t.tryYourself} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
@@ -739,28 +739,28 @@ export default function LandingPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
-                className="bg-zinc-900/50 rounded-3xl shadow-2xl shadow-black/50 border border-zinc-800 p-8 lg:p-10 backdrop-blur-sm"
+                className="bg-[#0d1730] rounded-3xl shadow-2xl shadow-blue-950/50 border border-blue-900/30 p-8 lg:p-10 backdrop-blur-sm"
               >
-                <h3 className="text-xl font-bold text-white border-b border-zinc-800 pb-6 mb-8 flex items-center gap-3">
-                  <ShieldCheck className="w-6 h-6 text-cyan-400" />
+                <h3 className="text-xl font-bold text-white border-b border-blue-900/30 pb-6 mb-8 flex items-center gap-3">
+                  <ShieldCheck className="w-6 h-6 text-blue-400" />
                   System Architecture Overview
                 </h3>
                 <div className="space-y-4">
-                  <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 flex justify-between items-center group hover:border-cyan-500/30 transition-colors">
-                    <span className="font-semibold text-zinc-300">Frontend Interface</span>
-                    <span className="text-xs bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-cyan-500/10 group-hover:text-cyan-400 transition-colors">Next.js + Tailwind</span>
+                  <div className="bg-blue-950/30 p-5 rounded-2xl border border-blue-900/30 flex justify-between items-center group hover:border-blue-600/40 transition-colors">
+                    <span className="font-semibold text-slate-300">Frontend Interface</span>
+                    <span className="text-xs bg-blue-900/30 text-blue-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-blue-600/20 group-hover:text-blue-200 transition-colors">Next.js + Tailwind</span>
                   </div>
-                  <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 flex justify-between items-center group hover:border-fuchsia-500/30 transition-colors">
-                    <span className="font-semibold text-zinc-300">Voice Recognition</span>
-                    <span className="text-xs bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-fuchsia-500/10 group-hover:text-fuchsia-400 transition-colors">Web Speech API</span>
+                  <div className="bg-blue-950/30 p-5 rounded-2xl border border-blue-900/30 flex justify-between items-center group hover:border-indigo-600/40 transition-colors">
+                    <span className="font-semibold text-slate-300">Voice Recognition</span>
+                    <span className="text-xs bg-blue-900/30 text-blue-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-indigo-600/20 group-hover:text-indigo-200 transition-colors">Web Speech API</span>
                   </div>
-                  <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 flex justify-between items-center group hover:border-emerald-500/30 transition-colors">
-                    <span className="font-semibold text-zinc-300">Intelligence Engine</span>
-                    <span className="text-xs bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-colors">Google Gemini</span>
+                  <div className="bg-blue-950/30 p-5 rounded-2xl border border-blue-900/30 flex justify-between items-center group hover:border-blue-500/40 transition-colors">
+                    <span className="font-semibold text-slate-300">Intelligence Engine</span>
+                    <span className="text-xs bg-blue-900/30 text-blue-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-blue-600/20 group-hover:text-blue-200 transition-colors">Google Gemini</span>
                   </div>
-                  <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800/80 flex justify-between items-center group hover:border-blue-500/30 transition-colors">
-                    <span className="font-semibold text-zinc-300">Scheme Database</span>
-                    <span className="text-xs bg-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-blue-500/10 group-hover:text-blue-400 transition-colors">JSON DB</span>
+                  <div className="bg-blue-950/30 p-5 rounded-2xl border border-blue-900/30 flex justify-between items-center group hover:border-blue-400/40 transition-colors">
+                    <span className="font-semibold text-slate-300">Scheme Database</span>
+                    <span className="text-xs bg-blue-900/30 text-blue-300 px-3 py-1.5 rounded-lg font-bold group-hover:bg-blue-500/20 group-hover:text-blue-100 transition-colors">JSON DB</span>
                   </div>
                 </div>
               </motion.div>
@@ -771,15 +771,15 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-zinc-950 py-12 border-t border-zinc-900 relative">
-        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+      <footer className="bg-[#060c18] py-12 border-t border-blue-900/20 relative">
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-900/40 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-br from-cyan-400 to-indigo-500 p-1.5 rounded-lg">
+              <div className="bg-gradient-to-br from-blue-500 to-blue-800 p-1.5 rounded-lg">
                 <Globe className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl tracking-tight text-white">JanSahayak<span className="text-cyan-400">.AI</span></span>
+              <span className="font-bold text-xl tracking-tight text-white">JanSahayak<span className="text-blue-400">.AI</span></span>
             </div>
             <p className="text-zinc-600 text-sm font-medium">
               &copy; 2026 Build for Good Hackathon Project. All rights reserved.
