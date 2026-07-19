@@ -8,12 +8,14 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Pagination } from '@/components/Pagination';
 
 export default function AdminPage() {
   const [schemes, setSchemes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -196,6 +198,16 @@ export default function AdminPage() {
     return matchesSearch && matchesCategory;
   });
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, categoryFilter]);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filteredSchemes.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const visibleSchemes = filteredSchemes.slice(startIndex, startIndex + itemsPerPage);
+
   const centralCount = schemes.filter(s => s.central_or_state === 'Central').length;
   const stateCount = schemes.filter(s => s.central_or_state === 'State').length;
   const categories = Array.from(new Set(schemes.map(s => s.category)));
@@ -289,7 +301,7 @@ export default function AdminPage() {
 
         {/* Search, Filter & Actions Row */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6 bg-slate-900/40 p-4 border border-slate-850 rounded-2xl">
-          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto flex-1">
+          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto flex-1 md:items-center">
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-3.5" />
               <input 
@@ -350,7 +362,7 @@ export default function AdminPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60 text-sm text-zinc-300">
-                  {filteredSchemes.map(scheme => (
+                  {visibleSchemes.map(scheme => (
                     <tr key={scheme.id} className="hover:bg-slate-800/30 transition-colors">
                       <td className="px-6 py-4">
                         <p className="font-bold text-slate-100">{scheme.name}</p>
@@ -395,6 +407,19 @@ export default function AdminPage() {
                   ))}
                 </tbody>
               </table>
+
+              {/* Pagination controls */}
+              <div className="p-4 border-t border-slate-800/80 bg-slate-950/20">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={filteredSchemes.length}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  langQuery="en-IN"
+                  T={({ children }) => <>{children}</>}
+                />
+              </div>
             </div>
           )}
         </div>
