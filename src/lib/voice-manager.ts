@@ -83,16 +83,47 @@ export class VoiceManager {
   ) {
     this.stop(); // Interruption: Cancel any previous speech/queue immediately
 
+    const rawChunks = Array.isArray(textOrTexts) ? textOrTexts : [textOrTexts];
     let textsToQueue: string[] = [];
-    if (Array.isArray(textOrTexts)) {
-      textsToQueue = textOrTexts;
-    } else {
-      // Chunk long text by sentences to allow natural queuing
-      textsToQueue = textOrTexts.match(/[^.!?]+[.!?]*/g) || [textOrTexts];
+
+    // Split any large chunk into smaller sentences/phrases to prevent Google TTS 200-char limit failure
+    for (const chunk of rawChunks) {
+      if (!chunk) continue;
+      const cleanedChunk = chunk.replace(/[*#]/g, '').replace(/\|\|/g, ',').trim();
+      if (cleanedChunk.length <= 150) {
+        textsToQueue.push(cleanedChunk);
+      } else {
+        // Split by sentence delimiters first
+        const sentences = cleanedChunk.match(/[^.!?|।\n]+[.!?|।\n]*/g) || [cleanedChunk];
+        for (const sentence of sentences) {
+          if (sentence.length <= 150) {
+            textsToQueue.push(sentence.trim());
+          } else {
+            // Split by comma delimiters
+            const parts = sentence.split(/[,，、;；]+/);
+            let currentPart = "";
+            for (const part of parts) {
+              const cleanedPart = part.trim();
+              if (!cleanedPart) continue;
+              if ((currentPart + cleanedPart).length > 150) {
+                if (currentPart.trim()) {
+                  textsToQueue.push(currentPart.trim() + ",");
+                }
+                currentPart = cleanedPart;
+              } else {
+                currentPart += (currentPart ? ", " : "") + cleanedPart;
+              }
+            }
+            if (currentPart.trim()) {
+              textsToQueue.push(currentPart.trim());
+            }
+          }
+        }
+      }
     }
-    
-    // Clean up texts
-    textsToQueue = textsToQueue.map(t => t.replace(/[*#]/g, '').trim()).filter(t => t.length > 0);
+
+    // Final clean up and filter out empty elements
+    textsToQueue = textsToQueue.map(t => t.trim()).filter(t => t.length > 0);
 
     if (textsToQueue.length === 0) {
       if (onEnd) onEnd();
