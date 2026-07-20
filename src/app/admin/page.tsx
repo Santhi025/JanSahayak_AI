@@ -213,7 +213,7 @@ export default function AdminPage() {
   const categories = Array.from(new Set(schemes.map(s => s.category)));
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-slate-100 font-sans selection:bg-cyan-500/30 pb-16">
+    <div className="min-h-screen bg-[#0B1120] text-slate-100 font-sans selection:bg-blue-500/30 pb-16">
       {/* Top Banner */}
       <header className="border-b border-slate-800 bg-[#0B1120]/80 backdrop-blur-xl sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
@@ -221,8 +221,8 @@ export default function AdminPage() {
             <Link href="/demo" className="p-2 hover:bg-slate-800 rounded-lg text-zinc-400 hover:text-white transition-all">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <span className="font-extrabold text-xl text-white tracking-tight">JanSahayak<span className="text-cyan-400">.AI</span></span>
-            <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded text-xs font-bold font-mono">ADMIN PANEL</span>
+            <span className="font-extrabold text-xl text-white tracking-tight">JanSahayak<span className="text-blue-500">.AI</span></span>
+            <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded text-xs font-bold font-mono">ADMIN PANEL</span>
           </div>
           <div className="flex items-center gap-4">
             <button 
@@ -248,7 +248,7 @@ export default function AdminPage() {
               <p className="text-sm font-medium text-zinc-400">Total Cloud Schemes</p>
               <h3 className="text-3xl font-extrabold text-white mt-2">{schemes.length}</h3>
             </div>
-            <div className="p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-xl text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+            <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.15)]">
               <Database className="w-6 h-6" />
             </div>
           </motion.div>
@@ -309,7 +309,7 @@ export default function AdminPage() {
                 placeholder="Search schemes by name, keyword or ID..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-slate-800 focus:border-cyan-500/50 rounded-xl text-sm focus:outline-none transition-all placeholder:text-zinc-500 text-slate-100"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-slate-800 focus:border-blue-500/50 rounded-xl text-sm focus:outline-none transition-all placeholder:text-zinc-500 text-slate-100"
               />
             </div>
             
@@ -317,7 +317,7 @@ export default function AdminPage() {
               <select
                 value={categoryFilter}
                 onChange={e => setCategoryFilter(e.target.value)}
-                className="bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl text-sm text-zinc-300 focus:outline-none focus:border-cyan-500/50 cursor-pointer w-full"
+                className="bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl text-sm text-zinc-300 focus:outline-none focus:border-blue-500/50 cursor-pointer w-full"
               >
                 <option value="All">All Categories</option>
                 {categories.map(c => (
@@ -329,7 +329,7 @@ export default function AdminPage() {
 
           <button 
             onClick={handleOpenAddModal}
-            className="w-full md:w-auto shrink-0 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 hover:scale-105 active:scale-95 transition-all text-white font-semibold rounded-xl text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+            className="w-full md:w-auto shrink-0 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 hover:scale-105 active:scale-95 transition-all text-white font-semibold rounded-xl text-sm flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.25)]"
           >
             <Plus className="w-4 h-4" />
             Add New Scheme
@@ -340,7 +340,7 @@ export default function AdminPage() {
         <div className="bg-slate-900/60 border border-slate-850 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center gap-3 text-zinc-400">
-              <RefreshCw className="w-8 h-8 animate-spin text-cyan-400" />
+              <RefreshCw className="w-8 h-8 animate-spin text-blue-500" />
               <p>Fetching schemes from Supabase Cloud...</p>
             </div>
           ) : filteredSchemes.length === 0 ? (
@@ -369,7 +369,7 @@ export default function AdminPage() {
                         <p className="text-xs text-mono text-zinc-500 font-mono mt-0.5">{scheme.id}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="inline-flex items-center rounded-md bg-cyan-500/10 px-2 py-1 text-xs font-semibold text-cyan-400 ring-1 ring-inset ring-cyan-500/20">
+                        <span className="inline-flex items-center rounded-md bg-blue-500/10 px-2 py-1 text-xs font-semibold text-blue-400 ring-1 ring-inset ring-blue-500/20">
                           {scheme.category}
                         </span>
                       </td>
@@ -389,7 +389,7 @@ export default function AdminPage() {
                         <div className="flex gap-2">
                           <button 
                             onClick={() => handleOpenEditModal(scheme)}
-                            className="p-1.5 hover:bg-slate-800 rounded-lg text-zinc-400 hover:text-cyan-400 transition-all"
+                            className="p-1.5 hover:bg-slate-800 rounded-lg text-zinc-400 hover:text-blue-400 transition-all"
                             title="Edit"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -437,7 +437,7 @@ export default function AdminPage() {
             >
               <div className="p-6 border-b border-slate-800 bg-slate-950/50 flex justify-between items-center">
                 <h3 className="font-extrabold text-lg text-slate-100 flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-cyan-400" />
+                  <FileText className="w-5 h-5 text-blue-400" />
                   {editingScheme ? 'Edit Government Scheme' : 'Add New Government Scheme'}
                 </h3>
                 <button 
@@ -459,7 +459,7 @@ export default function AdminPage() {
                       value={formId}
                       onChange={e => setFormId(e.target.value)}
                       disabled={!!editingScheme}
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm disabled:text-zinc-500"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm disabled:text-zinc-500"
                       required
                     />
                   </div>
@@ -471,7 +471,7 @@ export default function AdminPage() {
                       placeholder="e.g. Pradhan Mantri Kisan Samman Nidhi"
                       value={formName}
                       onChange={e => setFormName(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                       required
                     />
                   </div>
@@ -481,7 +481,7 @@ export default function AdminPage() {
                     <select
                       value={formCategory}
                       onChange={e => setFormCategory(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
                     >
                       <option value="Farmers">Farmers / Agriculture</option>
                       <option value="Students">Students / Education</option>
@@ -500,7 +500,7 @@ export default function AdminPage() {
                       <select
                         value={formCentralOrState}
                         onChange={e => setFormCentralOrState(e.target.value as any)}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
+                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
                       >
                         <option value="Central">Central Govt</option>
                         <option value="State">State Govt</option>
@@ -513,7 +513,7 @@ export default function AdminPage() {
                         placeholder="All, or Andhra Pradesh, etc."
                         value={formStates}
                         onChange={e => setFormStates(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                       />
                     </div>
                   </div>
@@ -527,7 +527,7 @@ export default function AdminPage() {
                     value={formDescription}
                     onChange={e => setFormDescription(e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                   />
                 </div>
 
@@ -538,7 +538,7 @@ export default function AdminPage() {
                     value={formBenefits}
                     onChange={e => setFormBenefits(e.target.value)}
                     rows={2}
-                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                   />
                 </div>
 
@@ -550,7 +550,7 @@ export default function AdminPage() {
                       placeholder="Aadhaar Card, Income Certificate, Resident Proof"
                       value={formDocuments}
                       onChange={e => setFormDocuments(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                     />
                   </div>
 
@@ -561,14 +561,14 @@ export default function AdminPage() {
                       placeholder="e.g. https://pmkisan.gov.in/"
                       value={formLink}
                       onChange={e => setFormLink(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                      className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                     />
                   </div>
                 </div>
 
                 {/* Eligibility rules */}
                 <div className="border-t border-slate-800 pt-6">
-                  <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-4">Rule-Based Eligibility Parameters</h4>
+                  <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-4">Rule-Based Eligibility Parameters</h4>
                   
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
@@ -576,7 +576,7 @@ export default function AdminPage() {
                       <select
                         value={formGender}
                         onChange={e => setFormGender(e.target.value as any)}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
+                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-zinc-300 focus:outline-none transition-all text-sm cursor-pointer"
                       >
                         <option value="All">All Genders</option>
                         <option value="Female">Female Only</option>
@@ -591,7 +591,7 @@ export default function AdminPage() {
                         placeholder="All, or Farmer, Student, etc."
                         value={formOccupations}
                         onChange={e => setFormOccupations(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                       />
                     </div>
 
@@ -603,7 +603,7 @@ export default function AdminPage() {
                           placeholder="e.g. 18"
                           value={formMinAge}
                           onChange={e => setFormMinAge(e.target.value)}
-                          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                         />
                       </div>
                       <div>
@@ -613,7 +613,7 @@ export default function AdminPage() {
                           placeholder="e.g. 60"
                           value={formMaxAge}
                           onChange={e => setFormMaxAge(e.target.value)}
-                          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                          className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                         />
                       </div>
                     </div>
@@ -625,7 +625,7 @@ export default function AdminPage() {
                         placeholder="e.g. 200000"
                         value={formIncomeLimit}
                         onChange={e => setFormIncomeLimit(e.target.value)}
-                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500/50 text-slate-100 focus:outline-none transition-all text-sm"
+                        className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:border-blue-500/50 text-slate-100 focus:outline-none transition-all text-sm"
                       />
                     </div>
                   </div>
@@ -637,7 +637,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formFarmer}
                         onChange={e => setFormFarmer(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">Farmer Only</span>
                     </label>
@@ -647,7 +647,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formStudent}
                         onChange={e => setFormStudent(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">Student Only</span>
                     </label>
@@ -657,7 +657,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formPregnant}
                         onChange={e => setFormPregnant(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">Pregnant Only</span>
                     </label>
@@ -667,7 +667,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formSenior}
                         onChange={e => setFormSenior(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">Senior Only</span>
                     </label>
@@ -677,7 +677,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formDailyWage}
                         onChange={e => setFormDailyWage(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">Daily Wage Only</span>
                     </label>
@@ -687,7 +687,7 @@ export default function AdminPage() {
                         type="checkbox" 
                         checked={formBpl}
                         onChange={e => setFormBpl(e.target.checked)}
-                        className="w-4 h-4 rounded accent-cyan-500 focus:ring-cyan-500/50"
+                        className="w-4 h-4 rounded accent-blue-600 focus:ring-blue-500/50"
                       />
                       <span className="text-sm font-medium">BPL Card Only</span>
                     </label>
@@ -705,7 +705,7 @@ export default function AdminPage() {
                 </button>
                 <button 
                   onClick={handleSubmit}
-                  className="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all text-white font-bold rounded-xl text-sm shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                  className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 transition-all text-white font-bold rounded-xl text-sm shadow-[0_0_15px_rgba(37,99,235,0.25)]"
                 >
                   Save Scheme
                 </button>
