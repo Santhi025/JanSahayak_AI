@@ -495,7 +495,7 @@ function VoiceInterfaceContent() {
     setRecognitionState('SPEAKING');
     const t = TRANSLATIONS[currentLang] || TRANSLATIONS['en-IN'];
     
-    // Build English chunks first (reason is already translated by match-schemes API)
+    // Build chunks directly in target language since matched scheme fields are already translated by the backend API
     const rawChunks = [
       `${scheme.name}.`,
       `${cleanHtmlText(scheme.description)}.`,
@@ -503,12 +503,9 @@ function VoiceInterfaceContent() {
       `${t.whyQualify || 'Why you qualify'}: ${scheme.matchDetails.reason}.`,
       `${t.requiredDocs || 'Required Documents'}: ${scheme.required_documents?.join(', ')}.`
     ];
-
-    // Translate scheme text (description, benefits, docs) to the selected language
-    const textChunks = await translateChunks(rawChunks, currentLang);
     
     voiceManager.speak(
-      textChunks,
+      rawChunks,
       currentLang,
       () => {
         setIsPlaying(true);
@@ -537,12 +534,9 @@ function VoiceInterfaceContent() {
       allChunksRaw.push(`${t.whyQualify || 'Why you qualify'}: ${scheme.matchDetails.reason}.`);
       allChunksRaw.push(`${t.requiredDocs || 'Required Documents'}: ${scheme.required_documents?.join(', ')}.`);
     });
-
-    // Translate all chunks to the selected language
-    const allChunks = await translateChunks(allChunksRaw, currentLang);
     
     voiceManager.speak(
-      allChunks,
+      allChunksRaw,
       currentLang,
       () => {
         setIsPlaying(true);
