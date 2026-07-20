@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { Scheme } from '@/lib/mock-schemes';
-import { prisma } from '@/lib/prisma';
+import { MySchemeService } from '@/backend/services/myscheme/mySchemeService';
+import { checkEligibility } from '@/backend/services/myscheme/eligibilityMatcher';
 
 /** 
  * Translates an array of strings to the target language in a single Google Translate batch call.
@@ -69,83 +69,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Profile is required' }, { status: 400 });
     }
 
-    // Fetch schemes from the database
-    const dbSchemes = await prisma.scheme.findMany();
-    
-    const schemes: Scheme[] = dbSchemes.map((s: any) => ({
-      ...s,
-      applicable_states: s.applicable_states as string[],
-      required_documents: s.required_documents as string[],
-      tags: s.tags as string[],
-      target_occupations: s.target_occupations as string[],
-    }));
-
+    // Fetch schemes from the MyScheme service (re-routing live or local fallback)
+    const schemes = await MySchemeService.getSchemes();
     const matches: any[] = [];
 
     for (const scheme of schemes) {
-      const reasons: string[] = [];
-      let isEligible = true;
-
-      // Rule: Gender
-      if (scheme.target_gender !== 'All') {
-        if (!profile.gender || profile.gender.toLowerCase() !== scheme.target_gender.toLowerCase()) {
-          isEligible = false;
-        } else {
-          reasons.push(`matches your gender (${profile.gender})`);
-        }
-      }
-
-      // Rule: State
-      if (!scheme.applicable_states.includes('All')) {
-        if (!profile.state || !scheme.applicable_states.some((s: string) => s.toLowerCase() === profile.state.toLowerCase())) {
-          isEligible = false;
-        } else {
-          reasons.push(`is applicable in your state (${profile.state})`);
-        }
-      }
-
-      // Rule: Occupations / Statuses
-      if (scheme.is_farmer_only && profile.occupation?.toLowerCase() !== 'farmer' && profile.farmer !== true) {
-        isEligible = false;
-      } else if (scheme.is_farmer_only) {
-        reasons.push('is designed for farmers');
-      }
-
-      if (scheme.is_student_only && profile.occupation?.toLowerCase() !== 'student' && profile.student !== true) {
-        isEligible = false;
-      } else if (scheme.is_student_only) {
-        reasons.push('supports students');
-      }
-
-      if (scheme.is_pregnant_only && profile.pregnant !== true) {
-        isEligible = false;
-      } else if (scheme.is_pregnant_only) {
-        reasons.push('supports pregnant women');
-      }
-
-      if (scheme.is_daily_wage_only && profile.occupation?.toLowerCase() !== 'daily wage labourer' && profile.dailyWageWorker !== true) {
-        isEligible = false;
-      } else if (scheme.is_daily_wage_only) {
-        reasons.push('supports daily wage labourers');
-      }
-
-      // Rule: Age
-      if (profile.age !== undefined && profile.age !== null) {
-        if (scheme.min_age && profile.age < scheme.min_age) isEligible = false;
-        if (scheme.max_age && profile.age > scheme.max_age) isEligible = false;
-        if (isEligible && (scheme.min_age || scheme.max_age)) {
-          reasons.push('fits your age bracket');
-        }
-      } else if (scheme.is_senior_only && profile.seniorCitizen !== true) {
-        isEligible = false;
-      } else if (scheme.is_senior_only) {
-        reasons.push('is for senior citizens');
-      }
-
-      if (isEligible) {
+      const eligibilityResult = checkEligibility(scheme, profile);
+      if (eligibilityResult.isEligible) {
         let finalReason = 'You meet the general eligibility criteria.';
-        if (reasons.length > 0) {
-          finalReason = `You qualify because this scheme ${reasons.join(' and ')}.`;
+        if (eligibilityResult.reasons.length > 0) {
+          finalReason = `You qualify because this scheme ${eligibilityResult.reasons.join(' and ')}.`;
         }
 
         matches.push({
